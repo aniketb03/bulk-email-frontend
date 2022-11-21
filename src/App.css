@@ -1,38 +1,105 @@
-.App {
+*{
+  box-sizing: border-box;
+}
+
+body{
+  background: #131315;
+  font-family: 'Nunito Sans',sans-serif;
+}
+
+.box{
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  height: 700px;
+  width: 1000px;
+  padding: 40px;
+  
+  transform: translate(-50%,-50%);
+  background: #242026;
+  box-shadow: 0 15px 25px rgba(143,124,236,0.7);
+  border-radius: 10px;
+}
+
+/* For Bulk Email name*/
+.box h2{
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.box .default{
+  margin-top: 65px;
+}
+.box .default input{
+  margin-top: 10px;
+  width: 50%;
+  color: #fff;
+  background: transparent;
+  outline: none;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid #fff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.box .ccmail{
+  margin: -50px 0px 0px 500px; /*  top right bottom left */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.box .ccmail input{
+  margin-top: 10px;
+  width: 100%;
+  color: #fff;
+  background: transparent;
+  outline: none;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid #fff;
 }
 
-.App-link {
-  color: #61dafb;
+.box .subject input{
+  margin: 10px 0px 0px 0px;
+  width: 100%;
+  color: #fff;
+  background: transparent;
+  outline: none;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid #fff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.box .message textarea{
+  margin: 10px 0px 0px 0px;
+  width: 900px;
+  height: 150px;
+  color: #fff;
+  background-color: #242026;
+  border: 1px solid #fff;
+}
+
+.box .message,.subject,.ccmail,.default,.user label{
+  color: #fff;
+}
+
+.box button{
+  padding: 10px 20px;
+  color: #CBBDDB;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .2s;
+  letter-spacing: 4px;
+  border: 1px solid #8F7CEC;
+  margin: 30px 400px 0px;
+}
+
+.box button:hover{
+  background: #8F7CEC;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 5px #8F7CEC, 0 0 25px #8F7CEC,0 0 50px #8F7CEC,0 0 100px #8F7CEC;
 }
