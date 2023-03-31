@@ -1,91 +1,125 @@
-import './App.css';
-import  React  from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import React from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
+import { API } from "./global";
 
-import TextareaAutosize from '@mui/material/TextareaAutosize';
+const emailvalidationSchema = Yup.object({
+  subject: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  body: Yup.string()
+    .min(2, "Too Short!")
+    .max(500, "Too Long!")
+    .required("Required"),
+});
 
 function App() {
+  const sendMail = (newEmail) => {
+    fetch(`${API}/user/sendmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newEmail),
+    });
 
-    const [batch,setbatch] = React.useState('');
-  
-    const handleChange = (event) => 
-      setbatch(event.target.value);
-    
+    console.log(newEmail);
+  };
+
+  const { handleSubmit, values, handleChange, handleBlur, errors, touched } =
+    useFormik({
+      initialValues: {
+        recipients: "",
+        subject: "",
+        body: "",
+      },
+      validationSchema: emailvalidationSchema,
+      onSubmit: (newEmail) => {
+        console.log("onSubmit", newEmail);
+        sendMail(newEmail);
+        toast.success("🦄 Email send Successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "dark",
+        });
+      },
+    });
 
   return (
-    <div className="App">
-     
-           <div className="box">
-           <h2>Bulk Email </h2>
-           <Box sx={{ minWidth: 120}}>
-      <FormControl fullWidth>
-        <InputLabel id="select-label">Batch</InputLabel>
-        <Select
-          labelId="select-label"
-          id="simple-select"
-          value={batch}
-          label="batch"
-          onChange={handleChange}
-        >
-          <MenuItem value={0}>None</MenuItem>
-          <MenuItem value={1}>B35 WD ENGLISH</MenuItem>
-          <MenuItem value={2}>B36 WD HINDI</MenuItem>
-          <MenuItem value={3}>B37 WD TAMIL</MenuItem>
-          <MenuItem value={4}>B38 WD ENGLISH</MenuItem>
-          <MenuItem value={5}>B39 WD HINDI</MenuItem>
-          <MenuItem value={6}>B40 WD TAMIL</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-    <br/>
-    <div className='user'>
-    <label>To Users:</label>
-    </div>
-    <div className="userlabel">
-    <TextareaAutosize
-   minRows={3}
-      placeholder="Recepints"
-      style={{top:210,background: 242026, color:'whitesmoke',width:900,height:50,position:'fixed', border: "1px solid #fff" }}
-    />
-    </div>
-    {/* Default mail name */}
-    <br/>
-    <div className='default'>
-    <label>From(default Mail name) :</label>
-    <br/> 
-    <input type="text" name="" required=""/>
-    </div>
-       {/* CC mail name */}
-    <div className='ccmail'>
-    <label>cc Mail :</label>
-    <br/> 
-    <input type="text" name="" required=""/>
-    </div>
-    <br/>
-      <div className='subject'>
-        <label>Subject :</label>
-        <input type="text" name="" required=""/>
-      </div>
-      <br/>
-    <div className='message'>   
-      <label>Message :</label>
-       <textarea type="text"/>
+    <>
+      <Container>
+        <div className="App">
+          <div className="box">
+            <h2>Bulk Email </h2>
+
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>To</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="recipients"
+                  placeholder="recipients "
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.recipients}
+                  error={touched.recipients && Boolean(errors.recipients)}
+                  helperText={
+                    touched.recipients && errors.recipients
+                      ? errors.recipients
+                      : " "
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Subject</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="subject"
+                  placeholder="Enter subject "
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.subject}
+                  error={touched.subject && Boolean(errors.subject)}
+                  helperText={
+                    touched.subject && errors.subject ? errors.subject : " "
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Body</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={6}
+                  name="body"
+                  placeholder="Enter message...."
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.body}
+                  error={touched.body && Boolean(errors.body)}
+                  helperText={touched.body && errors.body ? errors.body : " "}
+                />
+              </Form.Group>
+
+              <Button type="submit">Submit</Button>
+            </Form>
+          </div>
         </div>
-
-    <button>Submit</button>
-
-    </div>
-       
-      
-       
-      </div>
-
-    
-
+      </Container>
+      <ToastContainer />
+    </>
   );
 }
+
 export default App;
