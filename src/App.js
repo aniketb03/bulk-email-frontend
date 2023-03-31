@@ -27,8 +27,6 @@ function App() {
       },
       body: JSON.stringify(newEmail),
     });
-
-    console.log(newEmail);
   };
 
   const { handleSubmit, values, handleChange, handleBlur, errors, touched } =
